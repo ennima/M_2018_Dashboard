@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  
+
+
+<script type="text/javascript">
+    var mam_space = 37.4;
+    google.charts.load("current", {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ["Fecha", "Libre", { role: "style" } ],
+        ["19/07/17", mam_space - 14.3, "#36BFBF"],
+        ["31/07/17", mam_space - 17.9, "#F2AB27"],
+        ["01/08/17", mam_space - 16.3, "#F2AB27"],
+        ["15/08/17", mam_space - 16.7, "#F2AB27"],
+        ["31/08/17", mam_space - 20.0, "#F2AB27"],
+        ["01/09/17", mam_space - 20.5, "#F2AB27"],
+        ["04/09/17", mam_space - 22.9, "#F2134F"],
+        ["12/09/17", mam_space - 17.4, "#F2AB27"]
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+
+      var options = {
+        title: "Espacio Utilizado en Stratus 7/07/17 al 12/09/17",
+        width: 900,
+        height: 400,
+        bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+        vAxis: {
+            viewWindowMode:'explicit',
+            viewWindow: {
+              max:37.4,
+              min:0.0
+            }
+          }
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+      chart.draw(view, options);
+  }
+  </script>
+
+  </head>
+
+  <body>
+    <!--Div that will hold the pie chart-->
+    <div id="columnchart_values" style="width: 900px; height: 300px;"></div>
+  </body>
+</html>

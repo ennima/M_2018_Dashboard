@@ -1,0 +1,132 @@
+<html>
+  <head>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  
+     <style type="text/css">
+       svg{
+        shape-rendering: geometricPrecision;
+       }
+       text{
+        text-rendering: optimizeLegibility;
+       }
+     </style>
+
+<script type="text/javascript">
+    var mam_space = 37.4;
+    var normal_up_color= "color: #F2AB27; opacity: 0.8";
+    var success_up_color ="color: #36BFBF; opacity: 0.9";
+    var bad_up_color = "color: #F2134F; opacity: 0.9";
+
+    var normal_down_color= "color: #41484b; opacity: 0.8";
+    var success_down_color ="color: #025E73; opacity: 0.9";
+    var bad_down_color = "color: #8C061E; opacity: 0.9";
+
+    var axis_color = "#41484b";
+    google.charts.load("current", {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ["Fecha", "Usado",{role:"style"}, "Libre" , {role:"style"} ],
+        ["19/07/17", 14.3, success_down_color, mam_space - 14.3, success_up_color],
+        ["31/07/17", 17.9, normal_down_color, mam_space - 17.9, normal_up_color],
+        ["01/08/17", 16.3, normal_down_color, mam_space - 16.3, normal_up_color],
+        ["15/08/17", 16.7, normal_down_color, mam_space - 16.7, normal_up_color],
+        ["31/08/17", 20.0, normal_down_color, mam_space - 20.0, normal_up_color],
+        ["01/09/17", 20.5, normal_down_color, mam_space - 20.5, normal_up_color],
+        ["04/09/17", 22.9, bad_down_color, mam_space - 22.9, bad_up_color],
+        ["12/09/17", 17.4, normal_down_color, mam_space - 17.4, normal_up_color]
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0,1,
+                        { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                         2,3,{ calc: "stringify",
+                         sourceColumn: 3,
+                         type: "string",
+                         role: "annotation" },4]);
+      
+
+      var options = {
+        isStacked: 'true',
+        title: "Espacio Utilizado en Stratus 19/07/17 al 12/09/17",
+        titlePosition: "out",
+        titleTextStyle:{
+          fontName: 'Roboto',
+          fontSize: 20,
+          color:"A74F58"
+        },
+
+        width: 900,
+        height: 400,
+        bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+        vAxis: {
+            title:"Espacio en TB",
+            titleTextStyle:{
+              fontName: 'Roboto',
+              fontSize: 20,
+              color:"F2AB27"
+            },
+            viewWindowMode:'explicit',
+            viewWindow: {
+              max:37.6,
+              min:0.0
+            },
+            textStyle: {
+              fontName: 'Roboto',
+              fontSize: 16,
+              bold: true,
+              italic: false,
+              // The color of the text.
+              color: axis_color,
+              // The color of the text outline.
+              opacity: 0.9
+            }
+          },
+
+        hAxis: {
+            title:"Fecha",
+            titleTextStyle:{
+              fontName: 'Roboto',
+              fontSize: 20,
+              color:"F2AB27"
+            },
+            textStyle: {
+              fontName: 'Roboto',
+              fontSize: 16,
+              bold: true,
+              italic: false,
+              // The color of the text.
+              color: axis_color,
+              // The color of the text outline.
+              opacity: 0.9
+            }
+          },
+
+        annotations: {
+          textStyle: {
+            fontName: 'Roboto',
+            fontSize: 16,
+            bold: true,
+            italic: false,
+            opacity: 0.8
+          }
+        }
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+      chart.draw(view, options);
+  }
+  </script>
+
+  </head>
+
+  <body>
+    <!--Div that will hold the pie chart-->
+    <div id="columnchart_values" style="width: 900px; height: 300px;"></div>
+  </body>
+</html>
