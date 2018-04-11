@@ -84,6 +84,8 @@ fisrt_pass = False
 for breaker in line_breaker_conditio:
 	print(breaker)
 	if(fisrt_pass == False):
+		# First pass toma una muestra de los datos y genera una primer lista limpia
+		# descarta el primer breaker
 		for i in range(0,stream_limit):
 			print(str(i)+"  "+current_report[i])
 			item = current_report[i]
