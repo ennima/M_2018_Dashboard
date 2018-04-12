@@ -95,13 +95,6 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 
 
 
-
-
-
-
-
-
-
 def get_date_from_stratus_summary(filename):
 	print(filename)
 	d=str(filename).split("_")[3].replace(".csv","")
@@ -274,7 +267,7 @@ print("\n\n################# SCORES: ###########################")
 print(score_files)
 print("\n\n\n\n\n\n\n\n\n\n\n")
 
-with open(score_files[3],"r") as f:
+with open(score_files[0],"r") as f:
 	current_report = f.readlines()
 
 print(len(current_report))
@@ -288,58 +281,58 @@ print(len(current_report))
 
 line_breaker_conditio = [".cmf\\",".db\\"]
 path_to_inspect="V:\\media\\"
-path_to_inspect="V:\\media\\VOTOXVOTO 2018 LIVEU\\"
+path_to_inspect="V:\\media\\Especiales Noticias\\CAPSULA SISMO\\"
 path_to_inspect_size = 0
 
 # SISMO OAXACA SELENE\\
 
 stream_limit_1 = math.floor(len(current_report)/2)
 print(stream_limit_1)
-# lista_limpia = get_clean_list(current_report,line_breaker_conditio,stream_limit_1)
+lista_limpia = get_clean_list(current_report,line_breaker_conditio,len(current_report))
 
-print(stream_limit_1+1,len(current_report))
+# print(stream_limit_1+1,len(current_report))
 
-lista_limpia = []
+# lista_limpia = []
 
 
 
-proceso_fragmentado(get_clean_list_large,("in_out",(current_report,line_breaker_conditio)),stream_limit_1,24)
+# proceso_fragmentado(get_clean_list_large,("in_out",(current_report,line_breaker_conditio)),stream_limit_1,24)
 ############################ Simplificar más ###########################################
-total = stream_limit_1
-steps = 3
+# total = len(current_report)
+# steps = 1
 
-step_size = math.floor(total / steps)
+# step_size = math.floor(total / steps)
 
-print(step_size)
+# print("Step Size:",step_size)
 
-first_step = True
-ini = 0
-out = 0
-out_last = 0
-for i in range(0,steps):
-	if(first_step):
-		print("First Step")
-		ini = 0
-		out = ini + step_size
-		print("	"+str(ini)+","+str(out))
-		#made action
-		lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,ini,out)
+# first_step = True
+# ini = 0
+# out = 0
+# out_last = 0
+# for i in range(0,steps):
+# 	if(first_step):
+# 		print("First Step")
+# 		ini = 0
+# 		out = ini + step_size
+# 		print("	"+str(ini)+","+str(out))
+# 		#made action
+# 		lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,ini,out)
 
-		first_step = False
-	elif((i+1) == steps):
-		print("last step")
-		ini = out + 1
-		out = total
-		print("	"+str(ini)+","+str(out))
-		#made action
-		lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,ini,out)
-	else:
-		print("Step Intermedio",(i+1))
-		ini = out + 1
-		out = ini + step_size
-		print("	"+str(ini)+","+str(out))
-		#made action
-		lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,ini,out)
+# 		first_step = False
+# 	elif((i+1) == steps):
+# 		print("last step")
+# 		ini = out + 1
+# 		out = total
+# 		print("	"+str(ini)+","+str(out))
+# 		#made action
+# 		lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,ini,out)
+# 	else:
+# 		print("Step Intermedio",(i+1))
+# 		ini = out + 1
+# 		out = ini + step_size
+# 		print("	"+str(ini)+","+str(out))
+# 		#made action
+# 		lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,ini,out)
 
 
 
