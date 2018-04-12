@@ -1,4 +1,4 @@
-import pandas as pd
+# import pandas as pd
 import os
 import pathlib
 from datetime import datetime
@@ -8,7 +8,7 @@ import time
 from time import time as time_i
 
 cwd = os.getcwd()
-
+print(cwd)
 
 
 
@@ -137,6 +137,22 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 
 
 
+def abre_reporte(path):
+	with open(path,"r") as f:
+		current_report = f.readlines()
+	return current_report
+
+def get_lista_reportes(path_mm,type):
+	#Existen dos types "in" y "out"
+	score_files = []
+	for item in pathlib.Path(path_mm).iterdir():
+		# print(item)
+		if item.is_file():
+			# print(type(get_date_from_stratus_summary(item)))
+			if type in str(item):
+				print(item)
+				score_files.append(str(item))
+	return score_files
 
 def get_date_from_stratus_summary(filename):
 	print(filename)
@@ -295,97 +311,87 @@ tiempo_inicial = time_i()
 
 
 ### Get lista de reportes ###
-path_mm = "C:\\Users\\enrique.nieto\\Documents\\develops 2017\\Milenio\\Dashboard\\vxv\\"
+path_mm = "C:\\Users\\ennima\\Documents\\Develops 2018\\Milenio\\M_2018_Dash_data_vxv\\"
+score_files = get_lista_reportes(path_mm,"in")
 
-score_files = []
-for item in pathlib.Path(path_mm).iterdir():
-	if item.is_file():
-		#print(type(get_date_from_stratus_summary(item)))
-		if "out" in str(item):
-			# print(item)
-			score_files.append(str(item))
 
 
 ## Simplificar los reportes
-
 print("\n\n################# SCORES: ###########################")
 print(score_files)
-print("\n\n\n\n\n\n\n\n\n\n\n")
+print("\n\n\n\n\n")
+current_report = abre_reporte(score_files[0])
+print("Total of lines: ",len(current_report))
 
-with open(score_files[6],"r") as f:
-	current_report = f.readlines()
-
-print(len(current_report))
-
-### Fin Get lista de reportes ###
+# ### Fin Get lista de reportes ###
 
 
 
-### Generar la lista limpia de dirs ###
+# ### Generar la lista limpia de dirs ###
 
 
-line_breaker_conditio = [".cmf\\","Edius Projects\\",".db\\",".mp4\\",".txt\\",".jpg\\",".bmp\\",".mpeg\\",".eap\\",".ewc2\\"]
-path_to_inspect="V:\\media\\"
-path_to_inspect="V:\\media\\VOTOXVOTO 2018 LIVEU\\"
-path_to_inspect_size = 0
+# line_breaker_conditio = [".cmf\\","Edius Projects\\",".db\\",".mp4\\",".txt\\",".jpg\\",".bmp\\",".mpeg\\",".eap\\",".ewc2\\"]
+# path_to_inspect="V:\\media\\"
+# path_to_inspect="V:\\media\\VOTOXVOTO 2018 LIVEU\\"
+# path_to_inspect_size = 0
 
-# SISMO OAXACA SELENE\\
+# # SISMO OAXACA SELENE\\
 
-# stream_limit_1 = math.floor(len(current_report)/2)
-# print(stream_limit_1)
-# lista_limpia = get_clean_list(current_report,line_breaker_conditio,len(current_report))
+# # stream_limit_1 = math.floor(len(current_report)/2)
+# # print(stream_limit_1)
+# # lista_limpia = get_clean_list(current_report,line_breaker_conditio,len(current_report))
 
 
-## LArge step ok = 968
-steps = 48 
-lista_limpia = proceso_fragmentado(get_clean_list_large,("in_out",(current_report,line_breaker_conditio)),len(current_report),steps)
+# ## LArge step ok = 968
+# steps = 48 
+# lista_limpia = proceso_fragmentado(get_clean_list_large,("in_out",(current_report,line_breaker_conditio)),len(current_report),steps)
 
-# lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,stream_limit_1+1,len(current_report))
+# # lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,stream_limit_1+1,len(current_report))
 
-# print_list(lista_limpia)
+# # print_list(lista_limpia)
 
 
 
 
-############### Sumatoria de los elementos de la lista limpia 
-print("\n\n \n\n \n\n########## Clean List ###########")
-line_counter = 0
-sumatoria = 0
+# ############### Sumatoria de los elementos de la lista limpia 
+# print("\n\n \n\n \n\n########## Clean List ###########")
+# line_counter = 0
+# sumatoria = 0
 
 
 
-for item in lista_limpia:
-	line_counter+=1
-	# print(str(line_counter)+"  "+item)
+# for item in lista_limpia:
+# 	line_counter+=1
+# 	# print(str(line_counter)+"  "+item)
 
-	###### Extraer el peso ########
+# 	###### Extraer el peso ########
 	
-	if(item == lista_limpia[0]):
-		# print("cabezal")
-		pass
-	elif(path_to_inspect in item):
-		# print("SUMAR")
+# 	if(item == lista_limpia[0]):
+# 		# print("cabezal")
+# 		pass
+# 	elif(path_to_inspect in item):
+# 		# print("SUMAR")
 	
-		# item_split = item.split(",")
-		# sumatoria+=int(item_split[2])
-		# print(item_split[2])
-		size = get_size_bytes(item)
-		sumatoria+=size
+# 		# item_split = item.split(",")
+# 		# sumatoria+=int(item_split[2])
+# 		# print(item_split[2])
+# 		size = get_size_bytes(item)
+# 		sumatoria+=size
 		
-	else:
-		# print("---ITEM---",item)
-		path_to_inspect_size = get_size_bytes(item)
+# 	else:
+# 		# print("---ITEM---",item)
+# 		path_to_inspect_size = get_size_bytes(item)
 
-print("path_to_inspect_size = ",path_to_inspect_size)
-print("sumatoria = ",sumatoria)
-
-
-tiempo_final = time_i()
-tiempo_ejecucion = tiempo_final - tiempo_inicial
+# print("path_to_inspect_size = ",path_to_inspect_size)
+# print("sumatoria = ",sumatoria)
 
 
-print("Tardó: " , tiempo_ejecucion,"s")
-m, s = divmod(tiempo_ejecucion, 60)
-h, m = divmod(m, 60)
-restore_time = "%02d:%02d:%02d" % (h, m, s)
-print ("Tardó:",restore_time)
+# tiempo_final = time_i()
+# tiempo_ejecucion = tiempo_final - tiempo_inicial
+
+
+# print("Tardó: " , tiempo_ejecucion,"s")
+# m, s = divmod(tiempo_ejecucion, 60)
+# h, m = divmod(m, 60)
+# restore_time = "%02d:%02d:%02d" % (h, m, s)
+# print ("Tardó:",restore_time)
