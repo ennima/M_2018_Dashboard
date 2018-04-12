@@ -13,6 +13,94 @@ cwd = os.getcwd()
 
 
 #### Funciones
+ ## Funciones generales creadas a partir de éste problema
+def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
+	
+	case_type_string = type("hola")
+	case_type_tuple = type(("hola","que tal"))
+	this_type = ""
+	# print("LEN PARAM: ",len(parametros))
+	# print("Type Param:",type(parametros))
+
+	if(case_type_tuple == type(parametros)):
+		# print("---  Es una tupla papa")
+		this_type = "tuple"
+	elif(case_type_string == type(parametros)):
+		# print("--- String")
+		this_type = "str"
+
+	# total = 101
+	# steps = 2
+
+	step_size = math.floor(total / steps)
+
+	print("## Header ################## "+"steps:",steps,"step_size:",step_size,"total:",total)
+
+	first_step = True
+	ini = 0
+	out = 0
+	out_last = 0
+
+	for i in range(0,steps):
+		if(first_step):
+			print("First Step")
+			ini = 0
+			out = ini + step_size
+			print("	"+str(ini)+","+str(out))
+			#made action
+			if(this_type == "str"):
+				if(parametros == "in_out"):
+					tarea_ejecutar(ini,out)
+				else:
+					tarea_ejecutar(*parametros)
+			elif(this_type == "tuple"):
+				# print("OKI")
+				# print(parametros[0])
+				# print(parametros[1])
+				if(parametros[0] == "in_out"):
+					if(type(parametros[1]) == case_type_tuple):
+						parametrosN = parametros[1] + (str(ini),str(out))
+						# print(parametrosN)
+
+						tarea_ejecutar(*parametrosN)
+					elif(type(parametros[1]) == case_type_string):
+						print("## WARNING! ## Pendiente de resolver: Case String")
+
+			# out_last = out
+			first_step = False
+		elif((i+1) == steps):
+			print("last step")
+			ini = out + 1
+			out = total
+			print("	"+str(ini)+","+str(out))
+			#made action
+			if(this_type == "str"):
+				if(parametros == "in_out"):
+					tarea_ejecutar(ini,out)
+				else:
+					tarea_ejecutar(*parametros)
+			
+		else:
+			print("Step Intermedio")
+			ini = out + 1
+			out = ini + step_size
+			print("	"+str(ini)+","+str(out))
+			#made action
+			if(this_type == "str"):
+				if(parametros == "in_out"):
+					tarea_ejecutar(ini,out)
+				else:
+					tarea_ejecutar(*parametros)
+
+
+
+
+
+
+
+
+
+
 
 def get_date_from_stratus_summary(filename):
 	print(filename)
@@ -102,6 +190,7 @@ def get_clean_list(current_report,line_breaker_conditio,stream_limit):
 	return clean_list_1
 
 def get_clean_list_large(current_report,line_breaker_conditio,stream_limit_inf,stream_limit_sup):
+	print("## Ejecutando ##",)
 	discard_list = []
 	clean_list_1 = []
 	clean_list = []
@@ -116,7 +205,7 @@ def get_clean_list_large(current_report,line_breaker_conditio,stream_limit_inf,s
 		if(fisrt_pass == False):
 			# First pass toma una muestra de los datos y genera una primer lista limpia
 			# descarta el primer breaker
-			for i in range(stream_limit_inf,stream_limit_sup):
+			for i in range(int(stream_limit_inf),int(stream_limit_sup)):
 				# print(str(i)+"  "+current_report[i])
 				item = current_report[i]
 				breaker = line_breaker_conditio[0]
@@ -211,6 +300,11 @@ print(stream_limit_1)
 print(stream_limit_1+1,len(current_report))
 
 lista_limpia = []
+
+
+
+proceso_fragmentado(get_clean_list_large,("in_out",(current_report,line_breaker_conditio)),stream_limit_1,24)
+############################ Simplificar más ###########################################
 total = stream_limit_1
 steps = 3
 
@@ -250,7 +344,7 @@ for i in range(0,steps):
 
 
 
-
+############################ END Simplificar más ###########################################
 
 
 

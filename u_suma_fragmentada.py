@@ -23,22 +23,22 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 	case_type_string = type("hola")
 	case_type_tuple = type(("hola","que tal"))
 	this_type = ""
-	print("LEN PARAM: ",len(parametros))
-	print("Type Param:",type(parametros))
+	# print("LEN PARAM: ",len(parametros))
+	# print("Type Param:",type(parametros))
 
 	if(case_type_tuple == type(parametros)):
-		print("---  Es una tupla papa")
+		# print("---  Es una tupla papa")
 		this_type = "tuple"
 	elif(case_type_string == type(parametros)):
-		print("--- String")
+		# print("--- String")
 		this_type = "str"
 
-	total = 101
-	steps = 2
+	# total = 101
+	# steps = 2
 
 	step_size = math.floor(total / steps)
 
-	print(step_size)
+	print("## Header ################## "+"steps:",steps,"step_size:",step_size,"total:",total)
 
 	first_step = True
 	ini = 0
@@ -58,13 +58,13 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 				else:
 					tarea_ejecutar(*parametros)
 			elif(this_type == "tuple"):
-				print("OKI")
-				print(parametros[0])
-				print(parametros[1])
+				# print("OKI")
+				# print(parametros[0])
+				# print(parametros[1])
 				if(parametros[0] == "in_out"):
 					if(type(parametros[1]) == case_type_tuple):
 						parametrosN = parametros[1] + (str(ini),str(out))
-						print(parametrosN)
+						# print(parametrosN)
 
 						tarea_ejecutar(*parametrosN)
 					elif(type(parametros[1]) == case_type_string):
@@ -101,7 +101,7 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 ## ¿Cómo usar?
 # proceso_fragmentado(x,("in_out",("lol"),100,5)
 
-proceso_fragmentado(x2,("in_out",("lol","lalala")),100,5)
+proceso_fragmentado(x2,("in_out",("lol","lalala")),30,5)
 
 print("\n\n\n")
 proceso_fragmentado(x,("in_out"),100,5)
