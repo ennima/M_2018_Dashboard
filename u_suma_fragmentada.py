@@ -12,6 +12,7 @@ def x(a,b):
 
 def x2(a1,b1,a,b):
 	print("%s, %s QUE loco 1 %s param 2 %s"%(a1,b1,a,b))
+	return [a1,b]
 
 def y(z,t):
 	z(*t)
@@ -20,8 +21,12 @@ def y(z,t):
 
 def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 	
+	regreso_global = []
+
 	case_type_string = type("hola")
 	case_type_tuple = type(("hola","que tal"))
+	case_type_list = type(["hola","que tal"])
+
 	this_type = ""
 	# print("LEN PARAM: ",len(parametros))
 	# print("Type Param:",type(parametros))
@@ -66,7 +71,11 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 						parametrosN = parametros[1] + (str(ini),str(out))
 						# print(parametrosN)
 
-						tarea_ejecutar(*parametrosN)
+						resultado = tarea_ejecutar(*parametrosN)
+						if(case_type_list == type(resultado)):
+							# print("---------- regreso_global ----------------")
+							# print(regreso_global)
+							regreso_global += resultado
 					elif(type(parametros[1]) == case_type_string):
 						print("## WARNING! ## Pendiente de resolver: Case String")
 
@@ -83,6 +92,22 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 					tarea_ejecutar(ini,out)
 				else:
 					tarea_ejecutar(*parametros)
+			elif(this_type == "tuple"):
+				# print("OKI")
+				# print(parametros[0])
+				# print(parametros[1])
+				if(parametros[0] == "in_out"):
+					if(type(parametros[1]) == case_type_tuple):
+						parametrosN = parametros[1] + (str(ini),str(out))
+						# print(parametrosN)
+
+						resultado = tarea_ejecutar(*parametrosN)
+						if(case_type_list == type(resultado)):
+							# print("---------- regreso_global ----------------")
+							# print(regreso_global)
+							regreso_global += resultado
+					elif(type(parametros[1]) == case_type_string):
+						print("## WARNING! ## Pendiente de resolver: Case String")
 			
 		else:
 			print("Step Intermedio")
@@ -95,7 +120,25 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 					tarea_ejecutar(ini,out)
 				else:
 					tarea_ejecutar(*parametros)
+			elif(this_type == "tuple"):
+				# print("OKI")
+				# print(parametros[0])
+				# print(parametros[1])
+				if(parametros[0] == "in_out"):
+					if(type(parametros[1]) == case_type_tuple):
+						parametrosN = parametros[1] + (str(ini),str(out))
+						# print(parametrosN)
 
+						resultado = tarea_ejecutar(*parametrosN)
+						if(case_type_list == type(resultado)):
+							# print("---------- regreso_global ----------------")
+							# print(regreso_global)
+							regreso_global += resultado
+					elif(type(parametros[1]) == case_type_string):
+						print("## WARNING! ## Pendiente de resolver: Case String")
+
+
+	return regreso_global
 
 
 ## ¿Cómo usar?

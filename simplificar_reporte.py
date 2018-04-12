@@ -16,8 +16,12 @@ cwd = os.getcwd()
  ## Funciones generales creadas a partir de éste problema
 def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 	
+	regreso_global = []
+
 	case_type_string = type("hola")
 	case_type_tuple = type(("hola","que tal"))
+	case_type_list = type(["hola","que tal"])
+
 	this_type = ""
 	# print("LEN PARAM: ",len(parametros))
 	# print("Type Param:",type(parametros))
@@ -62,7 +66,11 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 						parametrosN = parametros[1] + (str(ini),str(out))
 						# print(parametrosN)
 
-						tarea_ejecutar(*parametrosN)
+						resultado = tarea_ejecutar(*parametrosN)
+						if(case_type_list == type(resultado)):
+							print("---------- regreso_global ----------------")
+							# print(regreso_global)
+							regreso_global += resultado
 					elif(type(parametros[1]) == case_type_string):
 						print("## WARNING! ## Pendiente de resolver: Case String")
 
@@ -79,6 +87,22 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 					tarea_ejecutar(ini,out)
 				else:
 					tarea_ejecutar(*parametros)
+			elif(this_type == "tuple"):
+				# print("OKI")
+				# print(parametros[0])
+				# print(parametros[1])
+				if(parametros[0] == "in_out"):
+					if(type(parametros[1]) == case_type_tuple):
+						parametrosN = parametros[1] + (str(ini),str(out))
+						# print(parametrosN)
+
+						resultado = tarea_ejecutar(*parametrosN)
+						if(case_type_list == type(resultado)):
+							print("---------- regreso_global ----------------")
+							# print(regreso_global)
+							regreso_global += resultado
+					elif(type(parametros[1]) == case_type_string):
+						print("## WARNING! ## Pendiente de resolver: Case String")
 			
 		else:
 			print("Step Intermedio")
@@ -91,6 +115,25 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 					tarea_ejecutar(ini,out)
 				else:
 					tarea_ejecutar(*parametros)
+			elif(this_type == "tuple"):
+				# print("OKI")
+				# print(parametros[0])
+				# print(parametros[1])
+				if(parametros[0] == "in_out"):
+					if(type(parametros[1]) == case_type_tuple):
+						parametrosN = parametros[1] + (str(ini),str(out))
+						# print(parametrosN)
+
+						resultado = tarea_ejecutar(*parametrosN)
+						if(case_type_list == type(resultado)):
+							print("---------- regreso_global ----------------")
+							# print(regreso_global)
+							regreso_global += resultado
+					elif(type(parametros[1]) == case_type_string):
+						print("## WARNING! ## Pendiente de resolver: Case String")
+
+
+	return regreso_global
 
 
 
@@ -249,6 +292,8 @@ def get_clean_list_large(current_report,line_breaker_conditio,stream_limit_inf,s
 tiempo_inicial = time_i() 
 
 
+
+
 ### Get lista de reportes ###
 path_mm = "C:\\Users\\enrique.nieto\\Documents\\develops 2017\\Milenio\\Dashboard\\vxv\\"
 
@@ -267,7 +312,7 @@ print("\n\n################# SCORES: ###########################")
 print(score_files)
 print("\n\n\n\n\n\n\n\n\n\n\n")
 
-with open(score_files[0],"r") as f:
+with open(score_files[6],"r") as f:
 	current_report = f.readlines()
 
 print(len(current_report))
@@ -279,76 +324,30 @@ print(len(current_report))
 ### Generar la lista limpia de dirs ###
 
 
-line_breaker_conditio = [".cmf\\",".db\\"]
+line_breaker_conditio = [".cmf\\","Edius Projects\\",".db\\",".mp4\\",".txt\\",".jpg\\",".bmp\\",".mpeg\\",".eap\\",".ewc2\\"]
 path_to_inspect="V:\\media\\"
-path_to_inspect="V:\\media\\Especiales Noticias\\CAPSULA SISMO\\"
+path_to_inspect="V:\\media\\VOTOXVOTO 2018 LIVEU\\"
 path_to_inspect_size = 0
 
 # SISMO OAXACA SELENE\\
 
-stream_limit_1 = math.floor(len(current_report)/2)
-print(stream_limit_1)
-lista_limpia = get_clean_list(current_report,line_breaker_conditio,len(current_report))
-
-# print(stream_limit_1+1,len(current_report))
-
-# lista_limpia = []
+# stream_limit_1 = math.floor(len(current_report)/2)
+# print(stream_limit_1)
+# lista_limpia = get_clean_list(current_report,line_breaker_conditio,len(current_report))
 
 
-
-# proceso_fragmentado(get_clean_list_large,("in_out",(current_report,line_breaker_conditio)),stream_limit_1,24)
-############################ Simplificar más ###########################################
-# total = len(current_report)
-# steps = 1
-
-# step_size = math.floor(total / steps)
-
-# print("Step Size:",step_size)
-
-# first_step = True
-# ini = 0
-# out = 0
-# out_last = 0
-# for i in range(0,steps):
-# 	if(first_step):
-# 		print("First Step")
-# 		ini = 0
-# 		out = ini + step_size
-# 		print("	"+str(ini)+","+str(out))
-# 		#made action
-# 		lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,ini,out)
-
-# 		first_step = False
-# 	elif((i+1) == steps):
-# 		print("last step")
-# 		ini = out + 1
-# 		out = total
-# 		print("	"+str(ini)+","+str(out))
-# 		#made action
-# 		lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,ini,out)
-# 	else:
-# 		print("Step Intermedio",(i+1))
-# 		ini = out + 1
-# 		out = ini + step_size
-# 		print("	"+str(ini)+","+str(out))
-# 		#made action
-# 		lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,ini,out)
-
-
-
-
-############################ END Simplificar más ###########################################
-
-
-
-
+## LArge step ok = 968
+steps = 48 
+lista_limpia = proceso_fragmentado(get_clean_list_large,("in_out",(current_report,line_breaker_conditio)),len(current_report),steps)
 
 # lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,stream_limit_1+1,len(current_report))
 
-print_list(lista_limpia)
+# print_list(lista_limpia)
 
 
 
+
+############### Sumatoria de los elementos de la lista limpia 
 print("\n\n \n\n \n\n########## Clean List ###########")
 line_counter = 0
 sumatoria = 0
@@ -357,14 +356,15 @@ sumatoria = 0
 
 for item in lista_limpia:
 	line_counter+=1
-	print(str(line_counter)+"  "+item)
+	# print(str(line_counter)+"  "+item)
 
 	###### Extraer el peso ########
 	
 	if(item == lista_limpia[0]):
-		print("cabezal")
+		# print("cabezal")
+		pass
 	elif(path_to_inspect in item):
-		print("SUMAR")
+		# print("SUMAR")
 	
 		# item_split = item.split(",")
 		# sumatoria+=int(item_split[2])
@@ -373,7 +373,7 @@ for item in lista_limpia:
 		sumatoria+=size
 		
 	else:
-		print("---ITEM---",item)
+		# print("---ITEM---",item)
 		path_to_inspect_size = get_size_bytes(item)
 
 print("path_to_inspect_size = ",path_to_inspect_size)
