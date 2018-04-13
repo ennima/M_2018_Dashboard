@@ -344,14 +344,14 @@ steps = 48
 ###  Seleccionar el mejor número de Steps de acuerdo al reporte 
 total_lines = len(current_report)
 
-### Velocidades de ejecución
+############   ### Velocidades de ejecución
 long_speed = [12,24,48,96,192,384]
 just_speed = [24,48,96,192,384,768]
 fast_speed = [48,96,192,384,768,968]
 ultra_fast_speed = [96,192,384,768,968,1968]
-just_entrepeneur_fast_speed = [96,768,1768,768,968,1968]
+just_entrepeneur_fast_speed = [196,768,1768,2768,4968,9968]
 
-speed_matrix = long_speed
+speed_matrix = just_entrepeneur_fast_speed
 
 if(total_lines < 400000):
 	steps = speed_matrix[0]
@@ -363,8 +363,11 @@ elif(total_lines < 900000):
 	steps = speed_matrix[3]
 elif(total_lines < 1000000):
 	steps = speed_matrix[4]
-elif(total_lines > 1200000):
+elif(total_lines > 1009717):
 	steps = speed_matrix[5]
+############   ### END Velocidades de ejecución
+
+
 
 step_size = math.floor(total_lines / steps)
 print("total_lines:",total_lines,"step_size:",step_size," Steps:",steps)
