@@ -98,17 +98,17 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 
 						resultado = tarea_ejecutar(*parametrosN)
 						if(case_type_list == type(resultado)):
-							print("---------- regreso_global ----------------")
+							# print("---------- regreso_global ----------------")
 							# print(regreso_global)
 							regreso_global += resultado
 					elif(type(parametros[1]) == case_type_string):
 						print("## WARNING! ## Pendiente de resolver: Case String")
 			
 		else:
-			print("Step Intermedio")
+			# print("Step Intermedio")
 			ini = out + 1
 			out = ini + step_size
-			print("	"+str(ini)+","+str(out))
+			# print("	"+str(ini)+","+str(out))
 			#made action
 			if(this_type == "str"):
 				if(parametros == "in_out"):
@@ -126,7 +126,7 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 
 						resultado = tarea_ejecutar(*parametrosN)
 						if(case_type_list == type(resultado)):
-							print("---------- regreso_global ----------------")
+							# print("---------- regreso_global ----------------")
 							# print(regreso_global)
 							regreso_global += resultado
 					elif(type(parametros[1]) == case_type_string):
@@ -155,7 +155,7 @@ def get_lista_reportes(path_mm,type):
 		if item.is_file():
 			# print(type(get_date_from_stratus_summary(item)))
 			if type in str(item):
-				print(item)
+				# print(item)
 				score_files.append(str(item))
 	return score_files
 
@@ -198,7 +198,7 @@ def get_clean_list(current_report,line_breaker_conditio,stream_limit):
 
 	for breaker in line_breaker_conditio:
 		pass_counter += 1
-		print("\n\n\n------############### Begin Pass",breaker,"- pass:",pass_counter)
+		# print("\n\n\n------############### Begin Pass",breaker,"- pass:",pass_counter)
 		if(fisrt_pass == False):
 			# First pass toma una muestra de los datos y genera una primer lista limpia
 			# descarta el primer breaker
@@ -222,7 +222,7 @@ def get_clean_list(current_report,line_breaker_conditio,stream_limit):
 			clean_list_1 = clean_list
 			clean_list = []
 		else:
-			print("next pass")
+			# print("next pass")
 			
 			for item in clean_list_1:
 				# breaker = line_breaker_conditio[1]
@@ -244,11 +244,11 @@ def get_clean_list(current_report,line_breaker_conditio,stream_limit):
 			
 
 
-		print("\n------############### END Pass",breaker,"- pass:",pass_counter,"\n\n\n")
+		# print("\n------############### END Pass",breaker,"- pass:",pass_counter,"\n\n\n")
 	return clean_list_1
 
 def get_clean_list_large(current_report,line_breaker_conditio,stream_limit_inf,stream_limit_sup):
-	print("## Ejecutando ##",)
+	# print("## Ejecutando ##",)
 	discard_list = []
 	clean_list_1 = []
 	clean_list = []
@@ -259,7 +259,7 @@ def get_clean_list_large(current_report,line_breaker_conditio,stream_limit_inf,s
 
 	for breaker in line_breaker_conditio:
 		pass_counter += 1
-		print("\n\n\n------############### Begin Pass",breaker,"- pass:",pass_counter)
+		# print("\n\n\n------############### Begin Pass",breaker,"- pass:",pass_counter)
 		if(fisrt_pass == False):
 			# First pass toma una muestra de los datos y genera una primer lista limpia
 			# descarta el primer breaker
@@ -282,7 +282,7 @@ def get_clean_list_large(current_report,line_breaker_conditio,stream_limit_inf,s
 			clean_list_1 = clean_list
 			clean_list = []
 		else:
-			print("next pass")
+			# print("next pass")
 			
 			for item in clean_list_1:
 				# breaker = line_breaker_conditio[1]
@@ -304,10 +304,43 @@ def get_clean_list_large(current_report,line_breaker_conditio,stream_limit_inf,s
 			
 
 
-		print("\n------############### END Pass",breaker,"- pass:",pass_counter,"\n\n\n")
+		# print("\n------############### END Pass",breaker,"- pass:",pass_counter,"\n\n\n")
 	return clean_list_1
 
+def suma_sizes_clean_list(lista_limpia,path_to_inspect):
+	##   path_to_inspect es la carpeta sobre la que se quiere actuar
+	tiempo_inicial1 = time_i()
+	line_counter = 0
+	sumatoria = 0
+	for item in lista_limpia:
+		line_counter+=1
+		# print(str(line_counter)+"  "+item)
 
+		###### Extraer el peso ########
+		
+		if(item == lista_limpia[0]):
+			# print("cabezal")
+			pass
+		elif(path_to_inspect in item):
+			# print("SUMAR")
+			size = get_size_bytes(item)
+			sumatoria+=size		
+		else:
+			# print("---ITEM---",item)
+			path_to_inspect_size = get_size_bytes(item)
+	print("###############  TIEMPOS SUMATORIA   ######################")
+	display_times_end(tiempo_inicial1)
+	return sumatoria
+
+
+def display_times_end(tiempo_inicial):
+	tiempo_final = time_i()
+	tiempo_ejecucion = tiempo_final - tiempo_inicial
+	print("Tardó: " , tiempo_ejecucion,"s")
+	m, s = divmod(tiempo_ejecucion, 60)
+	h, m = divmod(m, 60)
+	restore_time = "%02d:%02d:%02d" % (h, m, s)
+	print ("Tardó:",restore_time)
 #### Fin de Funciones
 
 
@@ -382,43 +415,17 @@ lista_limpia = proceso_fragmentado(get_clean_list_large,("in_out",(current_repor
 
 ############### Sumatoria de los elementos de la lista limpia 
 print("\n\n \n\n \n\n########## Clean List ###########")
-line_counter = 0
-sumatoria = 0
 
 
 
-for item in lista_limpia:
-	line_counter+=1
-	# print(str(line_counter)+"  "+item)
-
-	###### Extraer el peso ########
-	
-	if(item == lista_limpia[0]):
-		# print("cabezal")
-		pass
-	elif(path_to_inspect in item):
-		# print("SUMAR")
-	
-		# item_split = item.split(",")
-		# sumatoria+=int(item_split[2])
-		# print(item_split[2])
-		size = get_size_bytes(item)
-		sumatoria+=size
-		
-	else:
-		# print("---ITEM---",item)
-		path_to_inspect_size = get_size_bytes(item)
-
-print("path_to_inspect_size = ",path_to_inspect_size)
+sumatoria = suma_sizes_clean_list(lista_limpia,path_to_inspect)
+print("path_to_inspect = ",path_to_inspect)
+# print("path_to_inspect_size = ",path_to_inspect_size)
 print("sumatoria = ",sumatoria)
 
 
-tiempo_final = time_i()
-tiempo_ejecucion = tiempo_final - tiempo_inicial
 
+# ######### Despliega datos del tiempo de ejecución
 
-print("Tardó: " , tiempo_ejecucion,"s")
-m, s = divmod(tiempo_ejecucion, 60)
-h, m = divmod(m, 60)
-restore_time = "%02d:%02d:%02d" % (h, m, s)
-print ("Tardó:",restore_time)
+print("\n\n\n\n ################## TIEMPOS GLOBALES ###################")
+display_times_end(tiempo_inicial)
