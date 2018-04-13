@@ -142,6 +142,11 @@ def abre_reporte(path):
 		current_report = f.readlines()
 	return current_report
 
+def validar_desbordamiento(i,lista):
+	if(i >= len(lista)):		
+		i = len(lista) - 1
+	return i
+
 def get_lista_reportes(path_mm,type):
 	#Existen dos types "in" y "out"
 	score_files = []
@@ -199,6 +204,7 @@ def get_clean_list(current_report,line_breaker_conditio,stream_limit):
 			# descarta el primer breaker
 			for i in range(0,stream_limit):
 				# print(str(i)+"  "+current_report[i])
+				i = validar_desbordamiento(i,current_report)
 				item = current_report[i]
 				breaker = line_breaker_conditio[0]
 				if(breaker in item):
@@ -257,8 +263,8 @@ def get_clean_list_large(current_report,line_breaker_conditio,stream_limit_inf,s
 		if(fisrt_pass == False):
 			# First pass toma una muestra de los datos y genera una primer lista limpia
 			# descarta el primer breaker
-			for i in range(int(stream_limit_inf),int(stream_limit_sup)):
-				# print(str(i)+"  "+current_report[i])
+			for i in range(int(stream_limit_inf),int(stream_limit_sup)):						
+				i = validar_desbordamiento(i,current_report)
 				item = current_report[i]
 				breaker = line_breaker_conditio[0]
 				if(breaker in item):
@@ -305,8 +311,8 @@ def get_clean_list_large(current_report,line_breaker_conditio,stream_limit_inf,s
 #### Fin de Funciones
 
 
-tiempo_inicial = time_i() 
 
+tiempo_inicial = time_i() 
 
 
 
@@ -320,78 +326,96 @@ score_files = get_lista_reportes(path_mm,"in")
 print("\n\n################# SCORES: ###########################")
 print(score_files)
 print("\n\n\n\n\n")
-current_report = abre_reporte(score_files[0])
+current_report = abre_reporte(score_files[4])
 print("Total of lines: ",len(current_report))
 
 # ### Fin Get lista de reportes ###
 
 
 
-# ### Generar la lista limpia de dirs ###
+### Generar la lista limpia de dirs ###
+line_breaker_conditio = [".cmf\\","Edius Projects\\",".db\\",".mp4\\",".txt\\",".jpg\\",".bmp\\",".mpeg\\",".eap\\",".ewc2\\"]
+path_to_inspect="V:\\media\\VOTOXVOTO 2018 LIVEU\\"
+path_to_inspect_size = 0
+
+## LArge step ok = 968
+steps = 48 
+
+###  Seleccionar el mejor número de Steps de acuerdo al reporte 
+total_lines = len(current_report)
+
+### Velocidades de ejecución
+long_speed = [12,24,48,96,192,384]
+just_speed = [24,48,96,192,384,768]
+fast_speed = [48,96,192,384,768,968]
+ultra_fast_speed = [96,192,384,768,968,1968]
+just_entrepeneur_fast_speed = [96,768,1768,768,968,1968]
+
+speed_matrix = long_speed
+
+if(total_lines < 400000):
+	steps = speed_matrix[0]
+elif(total_lines < 600000):
+	steps = speed_matrix[1]
+elif(total_lines < 800000):
+	steps = speed_matrix[2]
+elif(total_lines < 900000):
+	steps = speed_matrix[3]
+elif(total_lines < 1000000):
+	steps = speed_matrix[4]
+elif(total_lines > 1200000):
+	steps = speed_matrix[5]
+
+step_size = math.floor(total_lines / steps)
+print("total_lines:",total_lines,"step_size:",step_size," Steps:",steps)
+lista_limpia = proceso_fragmentado(get_clean_list_large,("in_out",(current_report,line_breaker_conditio)),len(current_report),steps)
+
+# lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,stream_limit_1+1,len(current_report))
+
+# print_list(lista_limpia)
 
 
-# line_breaker_conditio = [".cmf\\","Edius Projects\\",".db\\",".mp4\\",".txt\\",".jpg\\",".bmp\\",".mpeg\\",".eap\\",".ewc2\\"]
-# path_to_inspect="V:\\media\\"
-# path_to_inspect="V:\\media\\VOTOXVOTO 2018 LIVEU\\"
-# path_to_inspect_size = 0
-
-# # SISMO OAXACA SELENE\\
-
-# # stream_limit_1 = math.floor(len(current_report)/2)
-# # print(stream_limit_1)
-# # lista_limpia = get_clean_list(current_report,line_breaker_conditio,len(current_report))
 
 
-# ## LArge step ok = 968
-# steps = 48 
-# lista_limpia = proceso_fragmentado(get_clean_list_large,("in_out",(current_report,line_breaker_conditio)),len(current_report),steps)
-
-# # lista_limpia = get_clean_list_large(current_report,line_breaker_conditio,stream_limit_1+1,len(current_report))
-
-# # print_list(lista_limpia)
+############### Sumatoria de los elementos de la lista limpia 
+print("\n\n \n\n \n\n########## Clean List ###########")
+line_counter = 0
+sumatoria = 0
 
 
 
+for item in lista_limpia:
+	line_counter+=1
+	# print(str(line_counter)+"  "+item)
 
-# ############### Sumatoria de los elementos de la lista limpia 
-# print("\n\n \n\n \n\n########## Clean List ###########")
-# line_counter = 0
-# sumatoria = 0
-
-
-
-# for item in lista_limpia:
-# 	line_counter+=1
-# 	# print(str(line_counter)+"  "+item)
-
-# 	###### Extraer el peso ########
+	###### Extraer el peso ########
 	
-# 	if(item == lista_limpia[0]):
-# 		# print("cabezal")
-# 		pass
-# 	elif(path_to_inspect in item):
-# 		# print("SUMAR")
+	if(item == lista_limpia[0]):
+		# print("cabezal")
+		pass
+	elif(path_to_inspect in item):
+		# print("SUMAR")
 	
-# 		# item_split = item.split(",")
-# 		# sumatoria+=int(item_split[2])
-# 		# print(item_split[2])
-# 		size = get_size_bytes(item)
-# 		sumatoria+=size
+		# item_split = item.split(",")
+		# sumatoria+=int(item_split[2])
+		# print(item_split[2])
+		size = get_size_bytes(item)
+		sumatoria+=size
 		
-# 	else:
-# 		# print("---ITEM---",item)
-# 		path_to_inspect_size = get_size_bytes(item)
+	else:
+		# print("---ITEM---",item)
+		path_to_inspect_size = get_size_bytes(item)
 
-# print("path_to_inspect_size = ",path_to_inspect_size)
-# print("sumatoria = ",sumatoria)
-
-
-# tiempo_final = time_i()
-# tiempo_ejecucion = tiempo_final - tiempo_inicial
+print("path_to_inspect_size = ",path_to_inspect_size)
+print("sumatoria = ",sumatoria)
 
 
-# print("Tardó: " , tiempo_ejecucion,"s")
-# m, s = divmod(tiempo_ejecucion, 60)
-# h, m = divmod(m, 60)
-# restore_time = "%02d:%02d:%02d" % (h, m, s)
-# print ("Tardó:",restore_time)
+tiempo_final = time_i()
+tiempo_ejecucion = tiempo_final - tiempo_inicial
+
+
+print("Tardó: " , tiempo_ejecucion,"s")
+m, s = divmod(tiempo_ejecucion, 60)
+h, m = divmod(m, 60)
+restore_time = "%02d:%02d:%02d" % (h, m, s)
+print ("Tardó:",restore_time)
