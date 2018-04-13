@@ -359,7 +359,9 @@ score_files = get_lista_reportes(path_mm,"in")
 print("\n\n################# SCORES: ###########################")
 print(score_files)
 print("\n\n\n\n\n")
-current_report = abre_reporte(score_files[4])
+## Select Scores
+score_curr = len(score_files) -1
+current_report = abre_reporte(score_files[score_curr])
 print("Total of lines: ",len(current_report))
 
 # ### Fin Get lista de reportes ###
@@ -417,11 +419,29 @@ lista_limpia = proceso_fragmentado(get_clean_list_large,("in_out",(current_repor
 print("\n\n \n\n \n\n########## Clean List ###########")
 
 
+###  Sumar varios directorios o paths
+path_root = "V:\\media\\"
+path_to_inspect_list=["VOTOXVOTO 2018 LIVEU","VOTOXVOTO 2018 CAMARAS","Especiales Noticias","Estudio","LiveU"]
 
-sumatoria = suma_sizes_clean_list(lista_limpia,path_to_inspect)
-print("path_to_inspect = ",path_to_inspect)
-# print("path_to_inspect_size = ",path_to_inspect_size)
-print("sumatoria = ",sumatoria)
+sumatoria_lista = []
+
+
+for directorio in path_to_inspect_list:
+	path_to_find = path_root + directorio + "\\"
+	sumatoria = suma_sizes_clean_list(lista_limpia,path_to_find)
+	print("path_to_inspect = ",path_to_find)
+	print("sumatoria = ",sumatoria)
+	item_suma = {"size":sumatoria,"path":directorio}
+	sumatoria_lista.append(item_suma)
+
+
+
+for item in sumatoria_lista:
+	print("->",item)
+# sumatoria = suma_sizes_clean_list(lista_limpia,path_to_find)
+# print("path_to_inspect = ",path_to_inspect)
+# # print("path_to_inspect_size = ",path_to_inspect_size)
+# print("sumatoria = ",sumatoria)
 
 
 
