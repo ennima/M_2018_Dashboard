@@ -135,6 +135,9 @@ def proceso_fragmentado(tarea_ejecutar,parametros,total,steps):
 
 	return regreso_global
 
+def modification_date(filename):
+    t = os.path.getmtime(filename)
+    return datetime.fromtimestamp(t)
 
 
 def abre_reporte(path):
@@ -180,7 +183,7 @@ def get_size_bytes(item):
 	item_split = item.split(",")
 	return int(item_split[2])
 
-#pinta una lista con número de linea como editor de código
+##  pinta una lista con número de linea como editor de código
 def print_list(lista):
 	line_counter = 0
 	for item in lista:
@@ -333,6 +336,16 @@ def suma_sizes_clean_list(lista_limpia,path_to_inspect):
 	return sumatoria
 
 
+def ls_dir_path(path_mm):
+	score_files = []
+	for item in pathlib.Path(path_mm).iterdir():
+		if item.is_file():
+		
+			pass
+		else:
+			print(str(item).replace(path_mm,""))
+	return score_files
+
 def display_times_end(tiempo_inicial):
 	tiempo_final = time_i()
 	tiempo_ejecucion = tiempo_final - tiempo_inicial
@@ -362,8 +375,21 @@ print("\n\n\n\n\n")
 ## Select Scores
 score_curr = len(score_files) -1
 current_report = abre_reporte(score_files[score_curr])
-print("Total of lines: ",len(current_report))
+# print("Total of lines: ",len(current_report))
 
+week_work = {"begin":1,"end":3}
+
+for item in score_files:
+	md = modification_date(item)
+	print(item," modified:",md, "Day:",md.weekday())
+	if(md.weekday() == week_work["begin"]):
+		print("Inicio de Semana")
+	elif(md.weekday()>= week_work["begin"] and md.weekday() <= week_work["end"]):
+		print("WORK")
+	elif(md.weekday() == week_work["end"]):
+		print("Fin de semana")
+	else:
+		print("DESCANSO")
 # ### Fin Get lista de reportes ###
 
 
@@ -371,7 +397,7 @@ print("Total of lines: ",len(current_report))
 ### Generar la lista limpia de dirs ###
 line_breaker_conditio = [".cmf\\","Edius Projects\\",".db\\",".mp4\\",".txt\\",".jpg\\",".bmp\\",".mpeg\\",".eap\\",".ewc2\\"]
 path_to_inspect="V:\\media\\VOTOXVOTO 2018 LIVEU\\"
-path_to_inspect_size = 0
+path_to_inspect_size = 1
 
 ## LArge step ok = 968
 steps = 48 
@@ -438,14 +464,11 @@ for directorio in path_to_inspect_list:
 
 for item in sumatoria_lista:
 	print("->",item)
-# sumatoria = suma_sizes_clean_list(lista_limpia,path_to_find)
-# print("path_to_inspect = ",path_to_inspect)
-# # print("path_to_inspect_size = ",path_to_inspect_size)
-# print("sumatoria = ",sumatoria)
 
 
+maximo_VxV_bytes = 3848000000000
 
-# ######### Despliega datos del tiempo de ejecución
+# # ######### Despliega datos del tiempo de ejecución
 
-print("\n\n\n\n ################## TIEMPOS GLOBALES ###################")
-display_times_end(tiempo_inicial)
+# print("\n\n\n\n ################## TIEMPOS GLOBALES ###################")
+# display_times_end(tiempo_inicial)
